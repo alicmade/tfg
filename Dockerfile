@@ -28,5 +28,6 @@ WORKDIR /app
 RUN pip install kagglehub
 RUN pip install pyspark
 RUN pip install numpy
+# Instala cualquier otra dependencia necesaria
 # Ejecuta tu script por defecto
 CMD ["python", "main.py"]
