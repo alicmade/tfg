@@ -1,9 +1,20 @@
+from pyspark.ml.classification import (
+    RandomForestClassifier,
+    LogisticRegression,
+    GBTClassifier,
+    DecisionTreeClassifier
+)
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+
 class FraudDetectionPipeline:
     def __init__(self, spark, path):
         self.spark = spark
         self.path = path
         self.df = None
-        self.model = None
+        #self.model = None
+        self.models = {}
+        self.metrics = []
 
     def load_data(self):
         import os
@@ -49,7 +60,26 @@ class FraudDetectionPipeline:
         print("ya se ha preprocesado el dataset")
 
 #probar con mas modelos
-    def train_model(self):
+    def train_and_evaluate_models(self):
+        train, test = self.df.randomSplit([0.7, 0.3], seed=42)
+        evaluator = BinaryClassificationEvaluator(labelCol="label", metricName="areaUnderROC")
+
+        classifiers = {
+            "RandomForest": RandomForestClassifier(labelCol="label", featuresCol="features", numTrees=100),
+            "LogisticRegression": LogisticRegression(labelCol="label", featuresCol="features", maxIter=20),
+            "GBTClassifier": GBTClassifier(labelCol="label", featuresCol="features", maxIter=50),
+            "DecisionTree": DecisionTreeClassifier(labelCol="label", featuresCol="features")
+        }
+
+        for name, clf in classifiers.items():
+            model = clf.fit(train)
+            predictions = model.transform(test)
+            auc = evaluator.evaluate(predictions)
+            self.models[name] = model
+            self.metrics.append({"model": name, "AUC": round(auc, 4)})
+            print(f"{name} AUC: {auc:.4f}")
+
+"""     def train_model(self):
         from pyspark.ml.classification import RandomForestClassifier
         train, test = self.df.randomSplit([0.7, 0.3], seed=42)
         #train = train.coalesce(2)
@@ -63,4 +93,7 @@ class FraudDetectionPipeline:
         predictions = self.model.transform(test)
         evaluator = BinaryClassificationEvaluator(labelCol="label")
         auc = evaluator.evaluate(predictions)
-        print(f"AUC: {auc:.4f}")
+        print(f"AUC: {auc:.4f}") """
+
+
+
