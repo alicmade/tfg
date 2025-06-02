@@ -1,10 +1,3 @@
-from pyspark.ml.classification import (
-    RandomForestClassifier,
-    LogisticRegression,
-    GBTClassifier,
-    DecisionTreeClassifier
-)
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
 
 class FraudDetectionPipeline:
@@ -61,6 +54,14 @@ class FraudDetectionPipeline:
 
 #probar con mas modelos
     def train_and_evaluate_models(self):
+        from pyspark.ml.classification import (
+            RandomForestClassifier,
+            LogisticRegression,
+            GBTClassifier,
+            DecisionTreeClassifier
+        )
+        from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
         train, test = self.df.randomSplit([0.7, 0.3], seed=42)
         evaluator = BinaryClassificationEvaluator(labelCol="label", metricName="areaUnderROC")
 
