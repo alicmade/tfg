@@ -4,7 +4,7 @@
 FROM openjdk:11-slim
 
 # Instala Python y pip
-RUN apt-get update && apt-get install -y python3 python3-pip && \
+RUN apt-get update && apt-get install -y python3 python3-pip python3-distutils && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     rm -rf /var/lib/apt/lists/*
 
