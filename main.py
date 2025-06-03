@@ -30,7 +30,7 @@ if __name__ == "__main__":
     pipeline.load_data()
     pipeline.preprocess()
     pipeline.train_and_evaluate_models()
-    pipeline.save_results_to_csv()
+    pipeline.save_metrics_to_csv()
     #pipeline.train_model()
     #pipeline.evaluate()
     #self.df.printSchema()

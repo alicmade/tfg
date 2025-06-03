@@ -79,12 +79,25 @@ class FraudDetectionPipeline:
             self.models[name] = model
             self.metrics.append({"model": name, "AUC": round(auc, 4)})
             print(f"{name} AUC: {auc:.4f}")
+            # Guardar el modelo si es necesario
 
-    def save_results_to_csv(self, output_path="/Users/aliciamartindelpozo/Desktop/UNI/model_metrics.csv"):
-        import pandas as pd
-        df_pd = pd.DataFrame(self.metrics)
-        df_pd.to_csv(output_path, index=False)
-        print(f"Resultados guardados en {output_path}")
+    def save_metrics_to_csv(self, file_path="resultados_metricas.csv"):
+        import csv
+        import os
+        print("ya se ha guardado el metrics")
+        # Verificamos si hay métricas
+        if not self.metrics:
+            print("No metrics to save.")
+            return
+
+        # Guardamos las métricas en un CSV
+        with open(file_path, mode='w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=["model", "AUC"])
+            writer.writeheader()
+            for metric in self.metrics:
+                writer.writerow(metric)
+
+        print(f"Metrics saved to {os.path.abspath(file_path)}")
 
 """     def train_model(self):
         from pyspark.ml.classification import RandomForestClassifier
