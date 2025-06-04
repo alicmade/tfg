@@ -106,21 +106,6 @@ class FraudDetectionPipeline:
 
         print(f"Metrics saved to {os.path.abspath(file_path)}")
 
-"""     def train_model(self):
-        from pyspark.ml.classification import RandomForestClassifier
-        train, test = self.df.randomSplit([0.7, 0.3], seed=42)
-        #train = train.coalesce(2)
-        #test = test.coalesce(2)
-        rf = RandomForestClassifier(labelCol="label", featuresCol="features", numTrees=100)
-        self.model = rf.fit(train)
-        print("ya se ha el entrenamiento el dataset")
-    def evaluate(self):
-        from pyspark.ml.evaluation import BinaryClassificationEvaluator
-        _, test = self.df.randomSplit([0.7, 0.3], seed=42)
-        predictions = self.model.transform(test)
-        evaluator = BinaryClassificationEvaluator(labelCol="label")
-        auc = evaluator.evaluate(predictions)
-        print(f"AUC: {auc:.4f}") """
 
 
 
