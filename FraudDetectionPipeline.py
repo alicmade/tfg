@@ -1,3 +1,4 @@
+import time
 
 
 class FraudDetectionPipeline:
@@ -73,12 +74,18 @@ class FraudDetectionPipeline:
         }
 
         for name, clf in classifiers.items():
+            start_time = time.time()
             model = clf.fit(train)
             predictions = model.transform(test)
             auc = evaluator.evaluate(predictions)
+            elapsed = time.time() - start_time
             self.models[name] = model
-            self.metrics.append({"model": name, "AUC": round(auc, 4)})
-            print(f"{name} AUC: {auc:.4f}")
+            self.metrics.append({
+                "model": name,
+                "AUC": round(auc, 4),
+                "time_seconds": round(elapsed, 2)
+            })
+            print(f"{name} AUC: {auc:.4f} | Tiempo: {elapsed:.2f} s")
 
 """     def train_model(self):
         from pyspark.ml.classification import RandomForestClassifier
