@@ -1,33 +1,26 @@
+#solo una iamgen, que tenga pyspark
+#FROM apache/spark-py
+#USER root
+FROM openjdk:11-slim
 
-FROM python:3.10-slim
-
-# Instala Java (necesario para Spark)
-RUN apt-get update && apt-get install -y openjdk-11-jre && rm -rf /var/lib/apt/lists/*
-
-# Variables de entorno para Spark
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PYSPARK_PYTHON=python3
-
-# Instala dependencias de Python
-#COPY requirements.txt .
-FROM ubuntu:20.04
-
-# Instala dependencias base
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    openjdk-11-jre \
-    python3 \
-    python3-pip && \
+# Instala Python y pip
+RUN apt-get update && apt-get install -y python3 python3-pip python3-distutils && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     rm -rf /var/lib/apt/lists/*
 
-# Copia la app y las dependencias
+# Rutas correctas
+ENV JAVA_HOME=/usr/local/openjdk-11
+ENV PATH=$JAVA_HOME/bin:$PATH
+ENV PYSPARK_PYTHON=python3
+
+# Instalar tus dependencias
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar tu código
 COPY . /app
 WORKDIR /app
-#todo : Reemplazar con requirements.txt si existe
-RUN pip install kagglehub
-RUN pip install pyspark
-RUN pip install numpy
-# Instala cualquier otra dependencia necesaria
-# Ejecuta tu script por defecto
+
 CMD ["python", "main.py"]
+
+
