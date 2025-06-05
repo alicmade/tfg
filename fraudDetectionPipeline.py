@@ -99,10 +99,5 @@ class FraudDetectionPipeline:
         exportador.save_metrics_to_csv(csv_path)
         exportador.upload_csv_to_google_sheets(csv_path, sheet_url, creds_path)
 
-            #self.save_metrics_to_csv(sheet_url, csv_path)
-            #if sheet_url:
-             #   print("Subiendo resultados a Google Sheets..")
-             #   self.upload_csv_to_google_sheets(csv_path, sheet_url, creds_path)
-
 
 

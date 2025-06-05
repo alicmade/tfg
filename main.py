@@ -31,7 +31,7 @@ if __name__ == "__main__":
     pipeline.preprocess()
     pipeline.train_and_evaluate_models()
     pipeline.export_results(
-        csv_path="resultados_metricas.csv",
+       csv_path="output/resultados_metricas.csv",
         sheet_url="https://docs.google.com/spreadsheets/d/1GWfUrWNkHEDb9XCGwjisNzfnoXPT8WXrOCdv4cvAC4w/edit?usp=sharing",
         creds_path="./credenciales.json"
     )
