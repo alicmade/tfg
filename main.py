@@ -30,8 +30,12 @@ if __name__ == "__main__":
     pipeline.load_data()
     pipeline.preprocess()
     pipeline.train_and_evaluate_models()
-    pipeline.save_metrics_to_csv()
-    pipeline.export_results()
+    pipeline.export_results(
+        csv_path="resultados_metricas.csv",
+        sheet_url="https://docs.google.com/spreadsheets/d/1GWfUrWNkHEDb9XCGwjisNzfnoXPT8WXrOCdv4cvAC4w/edit?usp=sharing",
+        creds_path="./credenciales.json"
+    )
+
     #pipeline.train_model()
     #pipeline.evaluate()
     #self.df.printSchema()

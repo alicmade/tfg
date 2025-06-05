@@ -47,9 +47,9 @@ class FraudDetectionPipeline:
         # Vectoriza
         assembler = VectorAssembler(inputCols=cols, outputCol="features")
         self.df = assembler.transform(self.df).select("features", "label")
-        from pyspark import StorageLevel
+        #from pyspark import StorageLevel
 
-        self.df.persist(StorageLevel.DISK_ONLY)
+       #self.df.persist(StorageLevel.DISK_ONLY)
 
         print("ya se ha preprocesado el dataset")
 
@@ -83,7 +83,7 @@ class FraudDetectionPipeline:
             self.metrics.append({
                 "model": name,
                 "AUC": round(auc, 4),
-                "tiempo": round(elapsed, 2)
+                "time_seconds": round(elapsed, 2)
             })
             print(f"{name} AUC: {auc:.4f} | Tiempo: {elapsed:.2f} s")
             # Guardar el modelo si es necesario
@@ -96,10 +96,11 @@ class FraudDetectionPipeline:
         if not self.metrics:
             print("No metrics to save.")
             return
+        fieldnames = self.metrics[0].keys()
 
         # Guardamos las métricas en un CSV
         with open(file_path, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=["model", "AUC", "Tiempo"])
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for metric in self.metrics:
                 writer.writerow(metric)
@@ -142,10 +143,10 @@ class FraudDetectionPipeline:
 
     def export_results(self, csv_path="resultados_metricas.csv", sheet_url=None, creds_path="./credenciales.json"):
 
-                self.save_metrics_to_csv(sheet_url, csv_path)
-                if sheet_url:
-                    print("Subiendo resultados a Google Sheets..")
-                    self.upload_csv_to_google_sheets(csv_path, sheet_url, creds_path)
+            self.save_metrics_to_csv(sheet_url, csv_path)
+            if sheet_url:
+                print("Subiendo resultados a Google Sheets..")
+                self.upload_csv_to_google_sheets(csv_path, sheet_url, creds_path)
 
 
 

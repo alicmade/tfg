@@ -16,7 +16,7 @@ ENV PYSPARK_PYTHON=python3
 # Instalar tus dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
+COPY credenciales.json /app/credenciales.json
 # Copiar tu código
 COPY . /app
 WORKDIR /app
