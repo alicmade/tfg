@@ -83,7 +83,7 @@ class FraudDetectionPipeline:
             self.metrics.append({
                 "model": name,
                 "AUC": round(auc, 4),
-                "time_seconds": round(elapsed, 2)
+                "tiempo": round(elapsed, 2)
             })
             print(f"{name} AUC: {auc:.4f} | Tiempo: {elapsed:.2f} s")
             # Guardar el modelo si es necesario
@@ -99,7 +99,7 @@ class FraudDetectionPipeline:
 
         # Guardamos las métricas en un CSV
         with open(file_path, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=["model", "AUC"])
+            writer = csv.DictWriter(file, fieldnames=["model", "AUC", "Tiempo"])
             writer.writeheader()
             for metric in self.metrics:
                 writer.writerow(metric)
