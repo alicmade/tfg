@@ -27,14 +27,14 @@ class FraudDetectionPipeline:
         print("ya ha cargado el dataset")
         self.df.show()
         self.df.printSchema()
+        self.df.groupBy("isFraud").count().show()
         fraud = self.df.filter("isFraud = 1")
-        non_fraud = self.df.filter("isFraud = 0").sample(fraction=0.0015, seed=42)  # ajusta la fracción
+        non_fraud = self.df.filter("isFraud = 0").sample(fraction=0.0015, seed=42)
 
         #mostramos el número de filas antes del balanceo y después
         balanced_df = fraud.union(non_fraud)
         self.df.groupBy("isFraud").count().show()
         self.df = balanced_df
-        self.df.groupBy("isFraud").count().show()
 
     def preprocess(self):
         # Añade la columna objetivo 'label'
@@ -64,7 +64,7 @@ class FraudDetectionPipeline:
     def train_and_evaluate_models(self):
 
         train, test = self.df.randomSplit([0.7, 0.3], seed=42)
-        evaluator = BinaryClassificationEvaluator(labelCol="label", metricName="areaUnderROC")
+        evaluator = BinaryClassificationEvaluator(labelCol="label", metricName="areaUnderPR")
 
         classifiers = {
             "RandomForest": RandomForestClassifier(labelCol="label", featuresCol="features", numTrees=100),
