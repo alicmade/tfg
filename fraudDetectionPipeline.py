@@ -33,8 +33,9 @@ class FraudDetectionPipeline:
 
         #mostramos el número de filas antes del balanceo y después
         balanced_df = fraud.union(non_fraud)
-        self.df.groupBy("isFraud").count().show()
         self.df = balanced_df
+        self.df.groupBy("isFraud").count().show()
+
 
     def preprocess(self):
         # Añade la columna objetivo 'label'
@@ -88,7 +89,6 @@ class FraudDetectionPipeline:
             print(f"{name} AUC: {auc:.4f} | Tiempo: {elapsed:.2f} s")
             #self.metrics.show()
             # Guardar el modelo si es necesario
-
 
 
     def export_results(self, csv_path="resultados_metricas.csv", sheet_url=None, creds_path="./credenciales.json"):

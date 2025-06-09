@@ -1,5 +1,5 @@
 model,AUC,time_seconds
-RandomForest,0.9965,18.54
-LogisticRegression,0.9806,10.32
-GBTClassifier,0.999,26.15
-DecisionTree,0.9788,14.4
+RandomForest,0.9961,20.9
+LogisticRegression,0.9806,13.41
+GBTClassifier,0.9991,32.36
+DecisionTree,0.9762,17.17

@@ -29,6 +29,7 @@ if __name__ == "__main__":
     pipeline = FraudDetectionPipeline(spark, path)
     pipeline.load_data()
     pipeline.preprocess()
+    #pipeline.balance_data()
     pipeline.train_and_evaluate_models()
     pipeline.export_results(
        csv_path="output/resultados_metricas.csv",
